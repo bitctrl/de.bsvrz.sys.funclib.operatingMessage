@@ -154,7 +154,14 @@ public class MessageSender {
 			}
 			_debug.fine("Zum Senden wird folgendes BetriebsMeldungsVerwaltungsObjekt verwendet", _messageObject);
 			_connection = connection;
-			final ClientApplication application = _connection.getLocalApplicationObject();
+			SystemObject application;
+			if(connection instanceof ClientDavConnection) {
+				ClientDavConnection cdc = (ClientDavConnection) _connection;
+				application = connection.getDataModel().getObject(cdc.getLocalApplicationObjectId());
+			}
+			else {
+				application = connection.getLocalApplicationObject();
+			}
 
 			// Werte der Applikation speichern
 			_applicationID = application.getId();
